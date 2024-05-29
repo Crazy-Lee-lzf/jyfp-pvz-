@@ -13,10 +13,10 @@ Class2=CMy2220151888Dlg
 Class3=CAboutDlg
 
 ResourceCount=5
-Resource1=IDD_DIALOG1
+Resource1=IDD_MY2220151888_DIALOG
 Resource2=IDR_MAINFRAME
 Class4=CPictureEx
-Resource3=IDD_MY2220151888_DIALOG
+Resource3=IDD_DIALOG1
 Class5=DIY
 Resource4=IDD_ABOUTBOX
 Resource5=IDR_MENU1
@@ -32,7 +32,7 @@ Type=0
 HeaderFile=2220151888Dlg.h
 ImplementationFile=2220151888Dlg.cpp
 Filter=D
-LastObject=ID_MENUITEM32776
+LastObject=IDC_STATICHouse
 BaseClass=CDialog
 VirtualFilter=dWC
 
@@ -54,7 +54,7 @@ Control4=IDOK,button,1342373889
 [DLG:IDD_MY2220151888_DIALOG]
 Type=1
 Class=CMy2220151888Dlg
-ControlCount=121
+ControlCount=126
 Control1=IDC_STATIC0,static,1073872896
 Control2=IDC_STATIC1,static,1073872896
 Control3=IDC_STATIC2,static,1073872896
@@ -176,6 +176,11 @@ Control118=IDC_BUTTON16,button,1342242816
 Control119=IDC_STATICHouse,static,1342308352
 Control120=IDC_STATICZombie,static,1342308352
 Control121=IDC_STATICTime,static,1342308352
+Control122=IDC_STATICL1,static,1342308609
+Control123=IDC_STATICL2,static,1342308609
+Control124=IDC_STATICL3,static,1342308609
+Control125=IDC_STATICL4,static,1342308609
+Control126=IDC_STATICL5,static,1342308609
 
 [CLS:CPictureEx]
 Type=0

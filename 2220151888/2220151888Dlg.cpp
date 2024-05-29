@@ -66,24 +66,53 @@ CMy2220151888Dlg::CMy2220151888Dlg(CWnd* pParent /*=NULL*/)
 	list_v = _T("");
 	//}}AFX_DATA_INIT
 	// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
-	int i, j;
-	for(i = 0;i < 50;i++) pic[i] = i;
-	for(i = 0;i < 5;i++){
-		for(j = 0;j < 8;j++){
-			record[i][j] = 9992 + j;
-			rname[i][j] = "无名氏";
+	
+	int i, j, time;
+	bool flag;
+	char ch;
+	ifstream ifile("phb.txt",ios_base::in);
+	i = 0;
+	j = 0;
+	time = 0;
+	flag = 0;
+	while((ch=ifile.get())!=EOF){
+		if(ch == '\n') continue;
+		if(ch == ' '){
+			if(flag == 0) flag = 1;
+			else{
+				record[i][j] = time;
+				time = 0;
+				j ++;
+				if(j == 8){
+					i ++;
+					j = 0;
+				}
+				flag = 0;
+			}
+		}
+		else{
+			if(flag == 0) rname[i][j] += ch;
+			else time = time * 10 + ch - '0';
 		}
 	}
+	for(i = 0;i < 50;i++) pic[i] = i;
+	ifile.close();
+
 	playernow = "crazy_lee";
+	page = 1;
+
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
 void CMy2220151888Dlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+		
 	//{{AFX_DATA_MAP(CMy2220151888Dlg)
-	for(int i=0;i<100;i++)
+	for(int i = 0;i < 100;i++)
 		DDX_Control(pDX, IDC_STATIC0 + i, tu[i]);
+	DDX_Control(pDX, IDC_STATICZombie, tuZ);
+	DDX_Control(pDX, IDC_STATICHouse, tuH);
 	DDX_Control(pDX, IDC_LIST1, list_c);
 	DDX_LBString(pDX, IDC_LIST1, list_v);
 	//}}AFX_DATA_MAP
@@ -118,6 +147,11 @@ BEGIN_MESSAGE_MAP(CMy2220151888Dlg, CDialog)
 	ON_COMMAND(ID_MENUITEM32774, OnDiff3)
 	ON_COMMAND(ID_MENUITEM32775, OnDiff4)
 	ON_COMMAND(ID_MENUITEM32776, OnDiff5)
+	ON_BN_CLICKED(IDC_STATICL1, OnStaticl1)
+	ON_BN_CLICKED(IDC_STATICL2, OnStaticl2)
+	ON_BN_CLICKED(IDC_STATICL3, OnStaticl3)
+	ON_BN_CLICKED(IDC_STATICL4, OnStaticl4)
+	ON_BN_CLICKED(IDC_STATICL5, OnStaticl5)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -250,20 +284,27 @@ void CMy2220151888Dlg::Show(){
 	}
 	if(right == 1){
 		GameWin();
+		KillTimer(2);
 	}
 }
 
 void CMy2220151888Dlg::Start(){
 	HideAll();
 	
-
-	SetWindowPos(&wndTop, 0, 0, diff.N * 66 + 200 , diff.M * 66 + 200 , SWP_SHOWWINDOW);
+	SetWindowPos(&wndTop, 0, 0, diff.M * 66 + 250 , diff.N * 66 + 250 , SWP_SHOWWINDOW);
 
 	CString temp = "欢迎:  " + playernow;
 	GetDlgItem(IDC_STATICName) -> SetWindowText(temp);
 	GetDlgItem(IDC_STATICName) -> SetWindowPos(NULL, 0, 0, 250, 30, SWP_SHOWWINDOW);
 
-	GetDlgItem(IDC_BUTTON6) -> SetWindowPos(NULL, diff.N * 66 + 100, 0, 100, 30, SWP_SHOWWINDOW);
+	GetDlgItem(IDC_BUTTON6) -> SetWindowPos(NULL, diff.N * 66 + 148, 0, 100, 30, SWP_SHOWWINDOW);
+
+	GetDlgItem(IDC_STATICHouse) -> SetWindowPos(NULL, 5, 35, 35, 35, SWP_SHOWWINDOW);
+	if(tuH.Load(MAKEINTRESOURCE(IDR_JPG51),_T("jpg")))	tuH.Draw();
+
+	GetDlgItem(IDC_STATICZombie) -> SetWindowPos(NULL, 50 + 66 * diff.M, 35, 35, 35, SWP_SHOWWINDOW);
+	if(tuZ.Load(MAKEINTRESOURCE(IDR_GIF1),_T("gif")))	tuZ.Draw();
+
 
 	start = 0;
 	lastnum = -1;
@@ -279,6 +320,8 @@ void CMy2220151888Dlg::Start(){
 	if( n&1 ) GetDlgItem(IDC_STATIC0 + n/2) -> ShowWindow(false);
 	RandPut();
 	Show();
+
+
 }
 
 void CMy2220151888Dlg::GameWin(){
@@ -286,7 +329,7 @@ void CMy2220151888Dlg::GameWin(){
 	CString temp;
 	temp.Format("  恭喜你过关啦！\n  你一共用时 %5d 秒", end- start);
 	MessageBox(temp, "过关");
-	int i = 0;
+	int i, j, p;
 	if(end - start < record[level][7]){
 		temp.Format("w(°ｏ°)w 你打破了记录，太厉害啦!");
 		MessageBox(temp, "新记录");
@@ -299,9 +342,24 @@ void CMy2220151888Dlg::GameWin(){
 			}
 		}
 	}
+	ofstream tfile("phb.txt",ios_base::out);
+	for(i = 0;i < 5;i++){
+		for(j = 0;j <8;j++){
+			p = 0;
+			while(rname[i][j].GetAt(p)!=0)
+				tfile << rname[i][j].GetAt(p++);
+			tfile << " ";
+			tfile << record[i][j] << " \n";
+		}
+	}
+	tfile.close();
 }
 
 void CMy2220151888Dlg::ShowRank(){
+	SetWindowPos(&wndTop, 500, 100, 450 , 300 , SWP_SHOWWINDOW);
+
+	GetDlgItem(IDC_LIST1) -> SetWindowPos(NULL, 50, 30, 350, 200, SWP_SHOWWINDOW);
+
 	int i;
 	CString temp;
 	list_c.ResetContent();
@@ -317,14 +375,14 @@ void CMy2220151888Dlg::ShowRank(){
 		case 4:temp = "地狱难度排行榜";break;
 	}
 	list_c.InsertString(0, temp);
-	GetDlgItem(IDC_LIST1) -> ShowWindow(true);
+	
 
 }
 
 void CMy2220151888Dlg::HideAll(){
 	int i = 0;
 	for(i = 1000;i <= 1110;i++) GetDlgItem(i) -> ShowWindow(false);
-	for(i = 1124;i <= 1133;i++) GetDlgItem(i) -> ShowWindow(false);
+	for(i = 1124;i <= 1138;i++) GetDlgItem(i) -> ShowWindow(false);
 }
 
 void CMy2220151888Dlg::Home(){
@@ -423,6 +481,17 @@ void CMy2220151888Dlg::OnTimer(UINT nIDEvent)
 			KillTimer(1);
 			break;
 		default: break;
+		case 2:
+			TIME++;
+			int l = 66 * diff.M;
+			double x = (diff.T - TIME) * 1.0 / diff.T;
+			GetDlgItem(IDC_STATICZombie) -> SetWindowPos(NULL, 50 + l * x, 35, 35, 35, SWP_SHOWWINDOW);
+			if(TIME == diff.T){
+				KillTimer(2);
+				MessageBox("僵尸吃掉了你的脑子","失败");
+				OnButton13();
+			}
+
 	}
 	CDialog::OnTimer(nIDEvent);
 }
@@ -443,7 +512,10 @@ void CMy2220151888Dlg::OnLButtonDown(UINT nFlags, CPoint point)
 	if(lastnum == nownum) return ;
 	if(pt.y-rectBtn.top<0 || x>diff.N-1|| pt.x-rectBtn.left<0 || y>diff.M-1)	return;
 	if(flag[nownum] == 1) return ;
-	if(start == 0) start = time(0);
+	if(start == 0){
+		start = time(0);
+		SetTimer(2, 1000, NULL);
+	}
 	KillTimer(1);
 	if(odd == 1){
 		Show();
@@ -505,7 +577,21 @@ void CMy2220151888Dlg::OnButton10()
 void CMy2220151888Dlg::OnButton12() 
 {
 	// TODO: Add your control notification handler code here
+	HideAll();
 	mode = 1;
+
+	SetWindowPos(&wndTop, 500, 100, 350 , 450 , SWP_SHOWWINDOW);
+	
+	CString temp = "欢迎:  " + playernow;
+	GetDlgItem(IDC_STATICName) -> SetWindowText(temp);
+	GetDlgItem(IDC_STATICName) -> SetWindowPos(NULL, 0, 0, 350, 30, SWP_SHOWWINDOW);
+
+	GetDlgItem(IDC_BUTTON9) -> SetWindowPos(NULL, 100, 70 + 50 * 1, 150, 40, SWP_SHOWWINDOW);
+	GetDlgItem(IDC_BUTTON8) -> SetWindowPos(NULL, 100, 70 + 50 * 2, 150, 40, SWP_SHOWWINDOW);
+	GetDlgItem(IDC_BUTTON10) -> SetWindowPos(NULL, 100, 70 + 50 * 3, 150, 40, SWP_SHOWWINDOW);
+	GetDlgItem(IDC_BUTTON6) -> SetWindowPos(NULL, 100, 70 + 50 * 4, 150, 40, SWP_SHOWWINDOW);
+
+
 }
 
 void CMy2220151888Dlg::OnButton13() 
@@ -538,7 +624,28 @@ void CMy2220151888Dlg::OnButton14()
 void CMy2220151888Dlg::OnButton8() 
 {
 	// TODO: Add your control notification handler code here
+	HideAll();
+	SetWindowPos(&wndTop, 400, 250, 550, 250, SWP_SHOWWINDOW);
 	
+	CString temp = "欢迎:  " + playernow;
+	GetDlgItem(IDC_STATICName) -> SetWindowText(temp);
+	GetDlgItem(IDC_STATICName) -> SetWindowPos(NULL, 0, 0, 350, 30, SWP_SHOWWINDOW);
+
+	GetDlgItem(IDC_BUTTON15) -> SetWindowPos(NULL, 70, 150, 100, 30, SWP_SHOWWINDOW);
+	GetDlgItem(IDC_BUTTON16) -> SetWindowPos(NULL, 330, 150, 100, 30, SWP_SHOWWINDOW);
+
+	int i = 0;
+//	CString temp;
+	for(i = 0;i < 5;i++){
+		GetDlgItem(IDC_STATIC0 + i) -> SetWindowPos(NULL,  50 + 100 * i, 40, 70, 70, SWP_SHOWWINDOW);
+		if(tu[i].Load(MAKEINTRESOURCE(IDR_JPG52),_T("jpg")))	tu[i].Draw();
+
+		GetDlgItem(IDC_STATICL1 + i) -> SetWindowPos(NULL,  50 + 100 * i, 120, 70, 30, SWP_SHOWWINDOW);
+
+		temp.Format("%d - %d", page, i + 1);
+		GetDlgItem(IDC_STATICL1 + i) -> SetWindowText(temp);
+	}
+
 }
 
 void CMy2220151888Dlg::OnButton9() 
@@ -550,13 +657,19 @@ void CMy2220151888Dlg::OnButton9()
 void CMy2220151888Dlg::OnButton15() 
 {
 	// TODO: Add your control notification handler code here
-	
+	if(page != 1){
+		page --;
+		OnButton8();
+	}
 }
 
 void CMy2220151888Dlg::OnButton16() 
 {
 	// TODO: Add your control notification handler code here
-	
+	if(page != 4){
+		page ++;
+		OnButton8();
+	}
 }
 
 void CMy2220151888Dlg::OnHomepage() 
@@ -568,29 +681,74 @@ void CMy2220151888Dlg::OnHomepage()
 void CMy2220151888Dlg::OnDiff1() 
 {
 	// TODO: Add your command handler code here
-	
+	HideAll();
+	level = 0;
+	ShowRank();
 }
 
 void CMy2220151888Dlg::OnDiff2() 
 {
 	// TODO: Add your command handler code here
-	
+	HideAll();
+	level = 1;
+	ShowRank();
 }
 
 void CMy2220151888Dlg::OnDiff3() 
 {
 	// TODO: Add your command handler code here
-	
+	HideAll();
+	level = 2;
+	ShowRank();
 }
 
 void CMy2220151888Dlg::OnDiff4() 
 {
 	// TODO: Add your command handler code here
-	
+	HideAll();
+	level = 3;
+	ShowRank();
 }
 
 void CMy2220151888Dlg::OnDiff5() 
 {
 	// TODO: Add your command handler code here
+	HideAll();
+	level = 4;
+	ShowRank();
+}
+
+
+void CMy2220151888Dlg::LevelInit(){
+
+}
+
+void CMy2220151888Dlg::OnStaticl1() 
+{
+	// TODO: Add your control notification handler code here
+	
+}
+
+void CMy2220151888Dlg::OnStaticl2() 
+{
+	// TODO: Add your control notification handler code here
+	
+}
+
+void CMy2220151888Dlg::OnStaticl3() 
+{
+	// TODO: Add your control notification handler code here
+	
+}
+
+void CMy2220151888Dlg::OnStaticl4() 
+{
+	// TODO: Add your control notification handler code here
+	
+}
+
+void CMy2220151888Dlg::OnStaticl5() 
+{
+	// TODO: Add your control notification handler code here
 	
 }

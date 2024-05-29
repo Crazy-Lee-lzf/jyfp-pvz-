@@ -4,6 +4,9 @@
 #include "PictureEx.h"
 #include <algorithm>
 #include "DIY.h"
+#include <fstream>
+
+using namespace std;
 
 #if !defined(AFX_2220151888DLG_H__B40C4B4D_5514_45B1_ACCF_40870B006950__INCLUDED_)
 #define AFX_2220151888DLG_H__B40C4B4D_5514_45B1_ACCF_40870B006950__INCLUDED_
@@ -27,6 +30,8 @@ public:
 	int mode;  // 0 挑战 1 闯关 2 自定义
 	int level; //第几关（挑战模式则是什么难度从 0 开始
 	int record[5][8];	//排行榜记录
+	int page;			//闯关模式第几大关
+	int TIME;			//当前关卡进行了多久
 
 	bool odd;
 	bool right;
@@ -59,7 +64,7 @@ public:
 			T = p.T;
 		};
 	};
-	DIFF diffgz[20];
+	DIFF diffcg[4][5];
 	DIFF diff;
 	
 	void HideAll();		//隐藏所有的控件
@@ -69,10 +74,14 @@ public:
 	void GameWin();		//闯关模式赢了 更新排行榜 
 	void ShowRank();	//刷新排行榜
 	void Home();		//回到主界面
+	void LevelInit();	//初始化关卡参数
 // Dialog Data
+	
 	//{{AFX_DATA(CMy2220151888Dlg)
 	enum { IDD = IDD_MY2220151888_DIALOG };
 	CPictureEx	tu[100];
+	CPictureEx	tuZ;
+	CPictureEx	tuH;
 	CListBox	list_c;
 	CString	list_v;
 	//}}AFX_DATA
@@ -119,6 +128,11 @@ protected:
 	afx_msg void OnDiff3();
 	afx_msg void OnDiff4();
 	afx_msg void OnDiff5();
+	afx_msg void OnStaticl1();
+	afx_msg void OnStaticl2();
+	afx_msg void OnStaticl3();
+	afx_msg void OnStaticl4();
+	afx_msg void OnStaticl5();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

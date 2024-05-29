@@ -267,6 +267,10 @@ SOURCE=".\res\Melon-pult1.jpg"
 # End Source File
 # Begin Source File
 
+SOURCE=".\res\OIP-C.jpg"
+# End Source File
+# Begin Source File
+
 SOURCE=".\res\Pea-Shooter1.jpg"
 # End Source File
 # Begin Source File

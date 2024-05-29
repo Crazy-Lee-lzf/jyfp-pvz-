@@ -194,6 +194,11 @@
 #define IDC_STATICHouse                 1131
 #define IDC_STATICZombie                1132
 #define IDC_STATICTime                  1133
+#define IDC_STATICL1                    1134
+#define IDC_STATICL2                    1135
+#define IDC_STATICL3                    1136
+#define IDC_STATICL4                    1137
+#define IDC_STATICL5                    1138
 #define ID_MENUITEM32771                32771
 #define ID_MENUITEM32772                32772
 #define ID_MENUITEM32773                32773
@@ -207,7 +212,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        186
 #define _APS_NEXT_COMMAND_VALUE         32777
-#define _APS_NEXT_CONTROL_VALUE         1134
+#define _APS_NEXT_CONTROL_VALUE         1135
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

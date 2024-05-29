@@ -59,6 +59,10 @@
 #define IDR_JPG49                       178
 #define IDR_JPG50                       179
 #define IDD_DIALOG1                     180
+#define IDR_MENU1                       181
+#define IDR_GIF1                        182
+#define IDR_JPG51                       183
+#define IDR_JPG52                       185
 #define IDC_STATIC0                     1000
 #define IDC_STATIC1                     1001
 #define IDC_STATIC2                     1002
@@ -180,14 +184,30 @@
 #define IDC_STATICT                     1120
 #define IDC_STATICDJS                   1121
 #define IDC_EDIT5                       1122
+#define IDC_BUTTON11                    1124
+#define IDC_BUTTON12                    1125
+#define IDC_BUTTON13                    1126
+#define IDC_BUTTON14                    1127
+#define IDC_STATICName                  1128
+#define IDC_BUTTON15                    1129
+#define IDC_BUTTON16                    1130
+#define IDC_STATICHouse                 1131
+#define IDC_STATICZombie                1132
+#define IDC_STATICTime                  1133
+#define ID_MENUITEM32771                32771
+#define ID_MENUITEM32772                32772
+#define ID_MENUITEM32773                32773
+#define ID_MENUITEM32774                32774
+#define ID_MENUITEM32775                32775
+#define ID_MENUITEM32776                32776
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        181
-#define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1124
+#define _APS_NEXT_RESOURCE_VALUE        186
+#define _APS_NEXT_COMMAND_VALUE         32777
+#define _APS_NEXT_CONTROL_VALUE         1134
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

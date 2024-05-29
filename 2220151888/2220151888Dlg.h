@@ -61,12 +61,14 @@ public:
 	};
 	DIFF diffgz[20];
 	DIFF diff;
-
+	
+	void HideAll();		//隐藏所有的控件
 	void Start();
 	void Show();
 	void RandPut();
 	void GameWin();		//闯关模式赢了 更新排行榜 
 	void ShowRank();	//刷新排行榜
+	void Home();		//回到主界面
 // Dialog Data
 	//{{AFX_DATA(CMy2220151888Dlg)
 	enum { IDD = IDD_MY2220151888_DIALOG };
@@ -102,6 +104,21 @@ protected:
 	afx_msg void OnButton5();
 	afx_msg void OnButton6();
 	afx_msg void OnButton7();
+	afx_msg void OnButton11();
+	afx_msg void OnButton10();
+	afx_msg void OnButton12();
+	afx_msg void OnButton13();
+	afx_msg void OnButton14();
+	afx_msg void OnButton8();
+	afx_msg void OnButton9();
+	afx_msg void OnButton15();
+	afx_msg void OnButton16();
+	afx_msg void OnHomepage();
+	afx_msg void OnDiff1();
+	afx_msg void OnDiff2();
+	afx_msg void OnDiff3();
+	afx_msg void OnDiff4();
+	afx_msg void OnDiff5();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

@@ -103,6 +103,21 @@ BEGIN_MESSAGE_MAP(CMy2220151888Dlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON5, OnButton5)
 	ON_BN_CLICKED(IDC_BUTTON6, OnButton6)
 	ON_BN_CLICKED(IDC_BUTTON7, OnButton7)
+	ON_BN_CLICKED(IDC_BUTTON11, OnButton11)
+	ON_BN_CLICKED(IDC_BUTTON10, OnButton10)
+	ON_BN_CLICKED(IDC_BUTTON12, OnButton12)
+	ON_BN_CLICKED(IDC_BUTTON13, OnButton13)
+	ON_BN_CLICKED(IDC_BUTTON14, OnButton14)
+	ON_BN_CLICKED(IDC_BUTTON8, OnButton8)
+	ON_BN_CLICKED(IDC_BUTTON9, OnButton9)
+	ON_BN_CLICKED(IDC_BUTTON15, OnButton15)
+	ON_BN_CLICKED(IDC_BUTTON16, OnButton16)
+	ON_COMMAND(ID_MENUITEM32771, OnHomepage)
+	ON_COMMAND(ID_MENUITEM32772, OnDiff1)
+	ON_COMMAND(ID_MENUITEM32773, OnDiff2)
+	ON_COMMAND(ID_MENUITEM32774, OnDiff3)
+	ON_COMMAND(ID_MENUITEM32775, OnDiff4)
+	ON_COMMAND(ID_MENUITEM32776, OnDiff5)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -137,19 +152,8 @@ BOOL CMy2220151888Dlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 	
 	// TODO: Add extra initialization here
-	SetWindowPos(&wndTop, 300, 100, 400 + 10*66, 200 + 10 * 66, SWP_SHOWWINDOW);
-
-	GetDlgItem(IDC_BUTTON1) -> SetWindowPos(NULL, 100, 150, 150, 30, SWP_SHOWWINDOW);
-	GetDlgItem(IDC_BUTTON2) -> SetWindowPos(NULL, 100, 200, 150, 30, SWP_SHOWWINDOW);
-	GetDlgItem(IDC_BUTTON3) -> SetWindowPos(NULL, 100, 250, 150, 30, SWP_SHOWWINDOW);
-	GetDlgItem(IDC_BUTTON4) -> SetWindowPos(NULL, 100, 300, 150, 30, SWP_SHOWWINDOW);
-	GetDlgItem(IDC_BUTTON5) -> SetWindowPos(NULL, 100, 350, 150, 30, SWP_SHOWWINDOW);
-	GetDlgItem(IDC_BUTTON6) -> SetWindowPos(NULL, 100, 450, 150, 30, SWP_SHOWWINDOW);
-	GetDlgItem(IDC_BUTTON7) -> SetWindowPos(NULL, 100, 400, 150, 30, SWP_SHOWWINDOW);
-	GetDlgItem(IDC_LIST1) -> SetWindowPos(NULL, 50, 500, 300, 200, SWP_SHOWWINDOW);
-
-	GetDlgItem(IDC_BUTTON6) -> EnableWindow(false);
-	GetDlgItem(IDC_LIST1) -> ShowWindow(false);
+	Home();
+	
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -250,16 +254,18 @@ void CMy2220151888Dlg::Show(){
 }
 
 void CMy2220151888Dlg::Start(){
+	HideAll();
+	
+
+	SetWindowPos(&wndTop, 0, 0, diff.N * 66 + 200 , diff.M * 66 + 200 , SWP_SHOWWINDOW);
+
+	CString temp = "»¶Ó­:  " + playernow;
+	GetDlgItem(IDC_STATICName) -> SetWindowText(temp);
+	GetDlgItem(IDC_STATICName) -> SetWindowPos(NULL, 0, 0, 250, 30, SWP_SHOWWINDOW);
+
+	GetDlgItem(IDC_BUTTON6) -> SetWindowPos(NULL, diff.N * 66 + 100, 0, 100, 30, SWP_SHOWWINDOW);
+
 	start = 0;
-	if(mode == 0){
-		GetDlgItem(IDC_BUTTON1) -> EnableWindow(false);
-		GetDlgItem(IDC_BUTTON2) -> EnableWindow(false);
-		GetDlgItem(IDC_BUTTON3) -> EnableWindow(false);
-		GetDlgItem(IDC_BUTTON4) -> EnableWindow(false);
-		GetDlgItem(IDC_BUTTON5) -> EnableWindow(false);
-		GetDlgItem(IDC_BUTTON7) -> EnableWindow(false);
-		GetDlgItem(IDC_BUTTON6) -> EnableWindow(true);
-	}
 	lastnum = -1;
 	odd = 1;
 	right = 0;
@@ -268,12 +274,11 @@ void CMy2220151888Dlg::Start(){
 	for(i = 0;i < n;i++){
 		ans[i] = -1;
 		flag[i] = 0;
-		GetDlgItem(IDC_STATIC0 + i) -> SetWindowPos(NULL, 360 + 66*(i%diff.M), 100 + 66*(i/diff.M), 65, 65, SWP_SHOWWINDOW);
+		GetDlgItem(IDC_STATIC0 + i) -> SetWindowPos(NULL,  50 + 66*(i%diff.M), 70 + 66*(i/diff.M), 65, 65, SWP_SHOWWINDOW);
 	}
 	if( n&1 ) GetDlgItem(IDC_STATIC0 + n/2) -> ShowWindow(false);
 	RandPut();
 	Show();
-	ShowRank();
 }
 
 void CMy2220151888Dlg::GameWin(){
@@ -293,12 +298,10 @@ void CMy2220151888Dlg::GameWin(){
 				std::swap(rname[level][i], rname[level][i+1]);
 			}
 		}
-		ShowRank();
 	}
 }
 
 void CMy2220151888Dlg::ShowRank(){
-	if(mode != 0 || level > 4) return ;
 	int i;
 	CString temp;
 	list_c.ResetContent();
@@ -316,6 +319,27 @@ void CMy2220151888Dlg::ShowRank(){
 	list_c.InsertString(0, temp);
 	GetDlgItem(IDC_LIST1) -> ShowWindow(true);
 
+}
+
+void CMy2220151888Dlg::HideAll(){
+	int i = 0;
+	for(i = 1000;i <= 1110;i++) GetDlgItem(i) -> ShowWindow(false);
+	for(i = 1124;i <= 1133;i++) GetDlgItem(i) -> ShowWindow(false);
+}
+
+void CMy2220151888Dlg::Home(){
+	HideAll();
+
+	SetWindowPos(&wndTop, 500, 100, 350 , 450 , SWP_SHOWWINDOW);
+	
+	CString temp = "»¶Ó­:  " + playernow;
+	GetDlgItem(IDC_STATICName) -> SetWindowText(temp);
+	GetDlgItem(IDC_STATICName) -> SetWindowPos(NULL, 0, 0, 250, 30, SWP_SHOWWINDOW);
+	GetDlgItem(IDC_BUTTON11) -> SetWindowPos(NULL, 250, 0, 100, 30, SWP_SHOWWINDOW);
+
+	GetDlgItem(IDC_BUTTON12) -> SetWindowPos(NULL, 100, 120, 150, 40, SWP_SHOWWINDOW);
+	GetDlgItem(IDC_BUTTON13) -> SetWindowPos(NULL, 100, 170, 150, 40, SWP_SHOWWINDOW);
+	GetDlgItem(IDC_BUTTON14) -> SetWindowPos(NULL, 100, 220, 150, 40, SWP_SHOWWINDOW);
 }
 void CMy2220151888Dlg::OnButton1() 
 {
@@ -385,18 +409,7 @@ void CMy2220151888Dlg::OnButton5()
 void CMy2220151888Dlg::OnButton6() 
 {
 	// TODO: Add your control notification handler code here
-	int i;
-	for(i = 0;i < 100;i++) GetDlgItem(IDC_STATIC0 + i) -> ShowWindow(false);
-	
-	GetDlgItem(IDC_BUTTON1) -> EnableWindow(true);
-	GetDlgItem(IDC_BUTTON2) -> EnableWindow(true);
-	GetDlgItem(IDC_BUTTON3) -> EnableWindow(true);
-	GetDlgItem(IDC_BUTTON4) -> EnableWindow(true);
-	GetDlgItem(IDC_BUTTON5) -> EnableWindow(true);
-	GetDlgItem(IDC_BUTTON7) -> EnableWindow(true);
-	GetDlgItem(IDC_BUTTON6) -> EnableWindow(false);
-	GetDlgItem(IDC_LIST1) -> ShowWindow(false);
-
+	Home();
 }
 
 void CMy2220151888Dlg::OnTimer(UINT nIDEvent) 
@@ -475,4 +488,109 @@ void CMy2220151888Dlg::OnButton7()
 		level = 5; 
 		Start();
 	}
+}
+
+void CMy2220151888Dlg::OnButton11() 
+{
+	// TODO: Add your control notification handler code here
+	
+}
+
+void CMy2220151888Dlg::OnButton10() 
+{
+	// TODO: Add your control notification handler code here
+	
+}
+
+void CMy2220151888Dlg::OnButton12() 
+{
+	// TODO: Add your control notification handler code here
+	mode = 1;
+}
+
+void CMy2220151888Dlg::OnButton13() 
+{
+	// TODO: Add your control notification handler code here
+	HideAll();
+	SetWindowPos(&wndTop, 500, 100, 350 , 550 , SWP_SHOWWINDOW);
+	
+	CString temp = "»¶Ó­:  " + playernow;
+	GetDlgItem(IDC_STATICName) -> SetWindowText(temp);
+	GetDlgItem(IDC_STATICName) -> SetWindowPos(NULL, 0, 0, 350, 30, SWP_SHOWWINDOW);
+
+	int i;
+	for(i = 0;i < 5;i++){
+		GetDlgItem(IDC_BUTTON1 + i) -> SetWindowPos(NULL, 100, 70 + 50 * i, 150, 40, SWP_SHOWWINDOW);
+	}
+	GetDlgItem(IDC_BUTTON6) -> SetWindowPos(NULL, 100, 70 + 50 * 6, 150, 40, SWP_SHOWWINDOW);
+	GetDlgItem(IDC_BUTTON7) -> SetWindowPos(NULL, 100, 70 + 50 * 5, 150, 40, SWP_SHOWWINDOW);
+	
+	mode = 0;
+
+}
+
+void CMy2220151888Dlg::OnButton14() 
+{
+	// TODO: Add your control notification handler code here
+	
+}
+
+void CMy2220151888Dlg::OnButton8() 
+{
+	// TODO: Add your control notification handler code here
+	
+}
+
+void CMy2220151888Dlg::OnButton9() 
+{
+	// TODO: Add your control notification handler code here
+	
+}
+
+void CMy2220151888Dlg::OnButton15() 
+{
+	// TODO: Add your control notification handler code here
+	
+}
+
+void CMy2220151888Dlg::OnButton16() 
+{
+	// TODO: Add your control notification handler code here
+	
+}
+
+void CMy2220151888Dlg::OnHomepage() 
+{
+	// TODO: Add your command handler code here
+	Home();
+}
+
+void CMy2220151888Dlg::OnDiff1() 
+{
+	// TODO: Add your command handler code here
+	
+}
+
+void CMy2220151888Dlg::OnDiff2() 
+{
+	// TODO: Add your command handler code here
+	
+}
+
+void CMy2220151888Dlg::OnDiff3() 
+{
+	// TODO: Add your command handler code here
+	
+}
+
+void CMy2220151888Dlg::OnDiff4() 
+{
+	// TODO: Add your command handler code here
+	
+}
+
+void CMy2220151888Dlg::OnDiff5() 
+{
+	// TODO: Add your command handler code here
+	
 }

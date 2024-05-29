@@ -227,6 +227,10 @@ SOURCE=.\res\Grave_Buster1.jpg
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\House.jpg
+# End Source File
+# Begin Source File
+
 SOURCE=".\res\Hypno-shroom1.jpg"
 # End Source File
 # Begin Source File
@@ -356,6 +360,10 @@ SOURCE=".\res\Wall-nut1.jpg"
 # Begin Source File
 
 SOURCE=.\res\Winter_Melon1.jpg
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\Zombie.gif
 # End Source File
 # End Group
 # Begin Source File

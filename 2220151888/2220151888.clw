@@ -13,10 +13,10 @@ Class2=CMy2220151888Dlg
 Class3=CAboutDlg
 
 ResourceCount=4
-Resource1=IDD_MY2220151888_DIALOG
+Resource1=IDD_ABOUTBOX
 Resource2=IDR_MAINFRAME
 Class4=CPictureEx
-Resource3=IDD_ABOUTBOX
+Resource3=IDD_MY2220151888_DIALOG
 Class5=DIY
 Resource4=IDD_DIALOG1
 

@@ -5,6 +5,7 @@
 #include <algorithm>
 #include "DIY.h"
 #include <fstream>
+#include "Login.h"
 
 using namespace std;
 
@@ -77,6 +78,7 @@ public:
 	void ShowRank();	//刷新排行榜
 	void Home();		//回到主界面
 	void LevelInit();	//初始化关卡参数
+	void Log();			//登录界面
 // Dialog Data
 	
 	//{{AFX_DATA(CMy2220151888Dlg)

@@ -15,11 +15,18 @@ class Login : public CDialog
 // Construction
 public:
 	Login(CWnd* pParent = NULL);   // standard constructor
+	
+	bool flag;
 
+	void Show_Log();
+	void Show_Reg();
+	long jiami(CString &s);
 // Dialog Data
 	//{{AFX_DATA(Login)
 	enum { IDD = IDD_DIALOG2 };
-		// NOTE: the ClassWizard will add data members here
+	CString	acount;
+	CString	pwd;
+	CString	repwd;
 	//}}AFX_DATA
 
 
@@ -35,7 +42,10 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(Login)
-		// NOTE: the ClassWizard will add member functions here
+	afx_msg void OnButton1();
+	afx_msg void OnButton2();
+	afx_msg void OnStatic3();
+	virtual BOOL OnInitDialog();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

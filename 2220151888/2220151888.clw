@@ -13,12 +13,12 @@ Class2=CMy2220151888Dlg
 Class3=CAboutDlg
 
 ResourceCount=6
-Resource1=IDD_ABOUTBOX
+Resource1=IDD_DIALOG2
 Resource2=IDR_MAINFRAME
 Class4=CPictureEx
-Resource3=IDD_DIALOG2
+Resource3=IDD_MY2220151888_DIALOG
 Class5=DIY
-Resource4=IDD_MY2220151888_DIALOG
+Resource4=IDD_ABOUTBOX
 Resource5=IDD_DIALOG1
 Class6=Login
 Resource6=IDR_MENU1
@@ -238,15 +238,16 @@ CommandCount=6
 [DLG:IDD_DIALOG2]
 Type=1
 Class=Login
-ControlCount=8
-Control1=IDC_STATIC0,static,1342308354
-Control2=IDC_STATIC1,static,1342308354
-Control3=IDC_STATIC2,static,1342308354
+ControlCount=9
+Control1=IDC_STATIC0,static,1342308352
+Control2=IDC_STATIC1,static,1342308352
+Control3=IDC_STATIC2,static,1342308352
 Control4=IDC_BUTTON1,button,1342242816
 Control5=IDC_STATIC3,static,1342308609
 Control6=IDC_BUTTON2,button,1342242816
 Control7=IDC_EDIT1,edit,1350631552
-Control8=IDC_EDIT2,edit,1350631552
+Control8=IDC_EDIT2,edit,1350631584
+Control9=IDC_EDIT3,edit,1350631584
 
 [CLS:Login]
 Type=0
@@ -254,4 +255,6 @@ HeaderFile=Login.h
 ImplementationFile=Login.cpp
 BaseClass=CDialog
 Filter=D
+LastObject=IDC_EDIT2
+VirtualFilter=dWC
 

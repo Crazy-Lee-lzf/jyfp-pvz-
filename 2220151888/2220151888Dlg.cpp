@@ -94,7 +94,7 @@ CMy2220151888Dlg::CMy2220151888Dlg(CWnd* pParent /*=NULL*/)
 	LevelInit();
 	
 
-	playernow = "crazy_lee";
+	playernow = "сн©м";
 	page = 1;
 	running = 0;
 
@@ -411,6 +411,15 @@ void CMy2220151888Dlg::Home(){
 	KillTimer(1);
 	KillTimer(2);
 }
+
+void CMy2220151888Dlg::Log(){
+	Login login;
+	if(login.DoModal() == 1){
+		playernow = login.acount;
+	}
+	Home();
+}
+
 void CMy2220151888Dlg::OnButton1() 
 {
 	// TODO: Add your control notification handler code here
@@ -582,7 +591,7 @@ void CMy2220151888Dlg::OnButton7()
 void CMy2220151888Dlg::OnButton11() 
 {
 	// TODO: Add your control notification handler code here
-	
+	Log();
 }
 
 void CMy2220151888Dlg::OnButton10() 

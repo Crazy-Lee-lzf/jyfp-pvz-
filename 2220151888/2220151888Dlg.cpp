@@ -67,39 +67,37 @@ CMy2220151888Dlg::CMy2220151888Dlg(CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 	// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
 	
-	int i, j, time;
+	int i, j;
 	bool flag;
 	char ch;
 	ifstream ifile("phb.txt",ios_base::in);
 	i = 0;
 	j = 0;
-	time = 0;
 	flag = 0;
 	while((ch=ifile.get())!=EOF){
 		if(ch == '\n') continue;
 		if(ch == ' '){
-			if(flag == 0) flag = 1;
-			else{
-				record[i][j] = time;
-				time = 0;
-				j ++;
-				if(j == 8){
-					i ++;
-					j = 0;
-				}
-				flag = 0;
+			j ++;
+			if(j == 8){
+				i ++;
+				j = 0;
 			}
+			ifile >> record[i][j];
 		}
 		else{
-			if(flag == 0) rname[i][j] += ch;
-			else time = time * 10 + ch - '0';
+			rname[i][j] += ch;
 		}
 	}
 	for(i = 0;i < 50;i++) pic[i] = i;
 	ifile.close();
+	
+	LevelInit();
+	
 
 	playernow = "crazy_lee";
 	page = 1;
+	running = 0;
+
 
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -109,7 +107,10 @@ void CMy2220151888Dlg::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 		
 	//{{AFX_DATA_MAP(CMy2220151888Dlg)
-	for(int i = 0;i < 100;i++)
+	int i;
+	for(i = 0;i < 5;i++)
+		DDX_Control(pDX, IDC_STATICL1 + i, tul[i]);
+	for(i = 0;i < 100;i++)
 		DDX_Control(pDX, IDC_STATIC0 + i, tu[i]);
 	DDX_Control(pDX, IDC_STATICZombie, tuZ);
 	DDX_Control(pDX, IDC_STATICHouse, tuH);
@@ -304,8 +305,13 @@ void CMy2220151888Dlg::Start(){
 
 	GetDlgItem(IDC_STATICZombie) -> SetWindowPos(NULL, 50 + 66 * diff.M, 35, 35, 35, SWP_SHOWWINDOW);
 	if(tuZ.Load(MAKEINTRESOURCE(IDR_GIF1),_T("gif")))	tuZ.Draw();
+	
+	GetDlgItem(IDC_STATICTime) -> SetWindowPos(NULL, 50 + 66 * diff.M + 45, 35, 200 - 35, 35, SWP_SHOWWINDOW);
+	temp.Format("Ê£ÓàÊ±¼ä£º%3dÃë", diff.T - TIME);
+	GetDlgItem(IDC_STATICTime) -> SetWindowText(temp);
 
-
+	running = 1;
+	TIME = 0;
 	start = 0;
 	lastnum = -1;
 	odd = 1;
@@ -353,6 +359,8 @@ void CMy2220151888Dlg::GameWin(){
 		}
 	}
 	tfile.close();
+
+	running = 0;
 }
 
 void CMy2220151888Dlg::ShowRank(){
@@ -382,7 +390,7 @@ void CMy2220151888Dlg::ShowRank(){
 void CMy2220151888Dlg::HideAll(){
 	int i = 0;
 	for(i = 1000;i <= 1110;i++) GetDlgItem(i) -> ShowWindow(false);
-	for(i = 1124;i <= 1138;i++) GetDlgItem(i) -> ShowWindow(false);
+	for(i = 1124;i <= 1143;i++) GetDlgItem(i) -> ShowWindow(false);
 }
 
 void CMy2220151888Dlg::Home(){
@@ -398,6 +406,10 @@ void CMy2220151888Dlg::Home(){
 	GetDlgItem(IDC_BUTTON12) -> SetWindowPos(NULL, 100, 120, 150, 40, SWP_SHOWWINDOW);
 	GetDlgItem(IDC_BUTTON13) -> SetWindowPos(NULL, 100, 170, 150, 40, SWP_SHOWWINDOW);
 	GetDlgItem(IDC_BUTTON14) -> SetWindowPos(NULL, 100, 220, 150, 40, SWP_SHOWWINDOW);
+
+	running = 0;
+	KillTimer(1);
+	KillTimer(2);
 }
 void CMy2220151888Dlg::OnButton1() 
 {
@@ -459,7 +471,7 @@ void CMy2220151888Dlg::OnButton5()
 	diff.t = 1500;
 	diff.n4 = 6;
 	diff.boss = 0;
-	diff.T = 720;
+	diff.T = 600;
 	level = 4;
 	Start();
 }
@@ -468,6 +480,7 @@ void CMy2220151888Dlg::OnButton6()
 {
 	// TODO: Add your control notification handler code here
 	Home();
+
 }
 
 void CMy2220151888Dlg::OnTimer(UINT nIDEvent) 
@@ -486,10 +499,13 @@ void CMy2220151888Dlg::OnTimer(UINT nIDEvent)
 			int l = 66 * diff.M;
 			double x = (diff.T - TIME) * 1.0 / diff.T;
 			GetDlgItem(IDC_STATICZombie) -> SetWindowPos(NULL, 50 + l * x, 35, 35, 35, SWP_SHOWWINDOW);
+
+			temp.Format("Ê£ÓàÊ±¼ä£º%3dÃë", diff.T - TIME);
+			GetDlgItem(IDC_STATICTime) -> SetWindowText(temp);
 			if(TIME == diff.T){
 				KillTimer(2);
 				MessageBox("½©Ê¬³ÔµôÁËÄãµÄÄÔ×Ó","Ê§°Ü");
-				OnButton13();
+				Home();
 			}
 
 	}
@@ -500,6 +516,7 @@ void CMy2220151888Dlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
 	if(right == 1) return;
+	if(running == 0) return;
 	
 	CPoint pt;
 	GetCursorPos(&pt);
@@ -618,7 +635,7 @@ void CMy2220151888Dlg::OnButton13()
 void CMy2220151888Dlg::OnButton14() 
 {
 	// TODO: Add your control notification handler code here
-	
+	EndDialog(1);
 }
 
 void CMy2220151888Dlg::OnButton8() 
@@ -635,15 +652,14 @@ void CMy2220151888Dlg::OnButton8()
 	GetDlgItem(IDC_BUTTON16) -> SetWindowPos(NULL, 330, 150, 100, 30, SWP_SHOWWINDOW);
 
 	int i = 0;
-//	CString temp;
 	for(i = 0;i < 5;i++){
-		GetDlgItem(IDC_STATIC0 + i) -> SetWindowPos(NULL,  50 + 100 * i, 40, 70, 70, SWP_SHOWWINDOW);
-		if(tu[i].Load(MAKEINTRESOURCE(IDR_JPG52),_T("jpg")))	tu[i].Draw();
+		GetDlgItem(IDC_STATICL1 + i) -> SetWindowPos(NULL,  50 + 100 * i, 40, 70, 70, SWP_SHOWWINDOW);
+		if(tul[i].Load(MAKEINTRESOURCE(IDR_JPG52),_T("jpg")))	tul[i].Draw();
 
-		GetDlgItem(IDC_STATICL1 + i) -> SetWindowPos(NULL,  50 + 100 * i, 120, 70, 30, SWP_SHOWWINDOW);
+		GetDlgItem(IDC_STATICL6 + i) -> SetWindowPos(NULL,  50 + 100 * i, 120, 70, 30, SWP_SHOWWINDOW);
 
 		temp.Format("%d - %d", page, i + 1);
-		GetDlgItem(IDC_STATICL1 + i) -> SetWindowText(temp);
+		GetDlgItem(IDC_STATICL6 + i) -> SetWindowText(temp);
 	}
 
 }
@@ -718,37 +734,63 @@ void CMy2220151888Dlg::OnDiff5()
 	ShowRank();
 }
 
+/*
+DIFF(){
+	N = 0, M = 0, t = 0;
+	n4 = 0;
+	T = 0;
+	boss = 0;
+};
+*/
 
 void CMy2220151888Dlg::LevelInit(){
+	ifstream ifile("level.txt",ios_base::in);
 
+	int i, j;
+	for(i = 0;i < 4;i++){
+		for(j = 0;j < 5;j++){
+			ifile >> diffcg[i][j].N;
+			ifile >> diffcg[i][j].M;
+			ifile >> diffcg[i][j].n4;
+			ifile >> diffcg[i][j].t;
+			ifile >> diffcg[i][j].T;
+			ifile >> diffcg[i][j].boss;
+			diffcg[i][j].t *= 1000;
+		}
+	}
 }
 
 void CMy2220151888Dlg::OnStaticl1() 
 {
 	// TODO: Add your control notification handler code here
-	
+	diff = diffcg[page - 1][0];
+	Start();
 }
 
 void CMy2220151888Dlg::OnStaticl2() 
 {
 	// TODO: Add your control notification handler code here
-	
+	diff = diffcg[page - 1][1];
+	Start();
 }
 
 void CMy2220151888Dlg::OnStaticl3() 
 {
 	// TODO: Add your control notification handler code here
-	
+	diff = diffcg[page - 1][2];
+	Start();
 }
 
 void CMy2220151888Dlg::OnStaticl4() 
 {
 	// TODO: Add your control notification handler code here
-	
+	diff = diffcg[page - 1][3];
+	Start();
 }
 
 void CMy2220151888Dlg::OnStaticl5() 
 {
 	// TODO: Add your control notification handler code here
-	
+	diff = diffcg[page - 1][4];
+	Start();
 }

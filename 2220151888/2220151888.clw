@@ -2,37 +2,40 @@
 
 [General Info]
 Version=1
-LastClass=CMy2220151888Dlg
+LastClass=Login
 LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "2220151888.h"
 
-ClassCount=5
+ClassCount=6
 Class1=CMy2220151888App
 Class2=CMy2220151888Dlg
 Class3=CAboutDlg
 
-ResourceCount=5
-Resource1=IDD_MY2220151888_DIALOG
+ResourceCount=6
+Resource1=IDD_ABOUTBOX
 Resource2=IDR_MAINFRAME
 Class4=CPictureEx
-Resource3=IDD_DIALOG1
+Resource3=IDD_DIALOG2
 Class5=DIY
-Resource4=IDD_ABOUTBOX
-Resource5=IDR_MENU1
+Resource4=IDD_MY2220151888_DIALOG
+Resource5=IDD_DIALOG1
+Class6=Login
+Resource6=IDR_MENU1
 
 [CLS:CMy2220151888App]
 Type=0
 HeaderFile=2220151888.h
 ImplementationFile=2220151888.cpp
 Filter=N
+LastObject=IDC_EDIT1
 
 [CLS:CMy2220151888Dlg]
 Type=0
 HeaderFile=2220151888Dlg.h
 ImplementationFile=2220151888Dlg.cpp
 Filter=D
-LastObject=IDC_STATICHouse
+LastObject=IDC_STATICL1
 BaseClass=CDialog
 VirtualFilter=dWC
 
@@ -41,6 +44,7 @@ Type=0
 HeaderFile=2220151888Dlg.h
 ImplementationFile=2220151888Dlg.cpp
 Filter=D
+LastObject=CAboutDlg
 
 [DLG:IDD_ABOUTBOX]
 Type=1
@@ -54,7 +58,7 @@ Control4=IDOK,button,1342373889
 [DLG:IDD_MY2220151888_DIALOG]
 Type=1
 Class=CMy2220151888Dlg
-ControlCount=126
+ControlCount=131
 Control1=IDC_STATIC0,static,1073872896
 Control2=IDC_STATIC1,static,1073872896
 Control3=IDC_STATIC2,static,1073872896
@@ -176,11 +180,16 @@ Control118=IDC_BUTTON16,button,1342242816
 Control119=IDC_STATICHouse,static,1342308352
 Control120=IDC_STATICZombie,static,1342308352
 Control121=IDC_STATICTime,static,1342308352
-Control122=IDC_STATICL1,static,1342308609
+Control122=IDC_STATICL1,static,1342309121
 Control123=IDC_STATICL2,static,1342308609
 Control124=IDC_STATICL3,static,1342308609
 Control125=IDC_STATICL4,static,1342308609
 Control126=IDC_STATICL5,static,1342308609
+Control127=IDC_STATICL6,static,1342308865
+Control128=IDC_STATICL7,static,1342308353
+Control129=IDC_STATICL8,static,1342308353
+Control130=IDC_STATICL9,static,1342308353
+Control131=IDC_STATICL10,static,1342308353
 
 [CLS:CPictureEx]
 Type=0
@@ -188,6 +197,7 @@ HeaderFile=PictureEx.h
 ImplementationFile=PictureEx.cpp
 BaseClass=CStatic
 Filter=W
+LastObject=CPictureEx
 
 [DLG:IDD_DIALOG1]
 Type=1
@@ -224,4 +234,24 @@ Command4=ID_MENUITEM32774
 Command5=ID_MENUITEM32775
 Command6=ID_MENUITEM32776
 CommandCount=6
+
+[DLG:IDD_DIALOG2]
+Type=1
+Class=Login
+ControlCount=8
+Control1=IDC_STATIC0,static,1342308354
+Control2=IDC_STATIC1,static,1342308354
+Control3=IDC_STATIC2,static,1342308354
+Control4=IDC_BUTTON1,button,1342242816
+Control5=IDC_STATIC3,static,1342308609
+Control6=IDC_BUTTON2,button,1342242816
+Control7=IDC_EDIT1,edit,1350631552
+Control8=IDC_EDIT2,edit,1350631552
+
+[CLS:Login]
+Type=0
+HeaderFile=Login.h
+ImplementationFile=Login.cpp
+BaseClass=CDialog
+Filter=D
 

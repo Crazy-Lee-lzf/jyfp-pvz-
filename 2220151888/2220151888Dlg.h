@@ -35,10 +35,12 @@ public:
 
 	bool odd;
 	bool right;
+	bool running;		//是否正在游玩 
 	bool flag[100];
 
 	CString rname[5][8];	//姓名
 	CString playernow;	//当前玩家
+	CString temp;
 
 	time_t start;
 	time_t end;
@@ -79,6 +81,7 @@ public:
 	
 	//{{AFX_DATA(CMy2220151888Dlg)
 	enum { IDD = IDD_MY2220151888_DIALOG };
+	CPictureEx	tul[5];
 	CPictureEx	tu[100];
 	CPictureEx	tuZ;
 	CPictureEx	tuH;

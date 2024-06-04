@@ -106,6 +106,10 @@ SOURCE=.\DIY.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\Login.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\PictureEx.cpp
 # End Source File
 # Begin Source File
@@ -128,6 +132,10 @@ SOURCE=.\2220151888Dlg.h
 # Begin Source File
 
 SOURCE=.\DIY.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Login.h
 # End Source File
 # Begin Source File
 

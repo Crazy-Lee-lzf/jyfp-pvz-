@@ -394,5 +394,9 @@ SOURCE=.\res\Zombie.gif
 
 SOURCE=.\ReadMe.txt
 # End Source File
+# Begin Source File
+
+SOURCE=".\res\tk4zv-35kb2.wav"
+# End Source File
 # End Target
 # End Project

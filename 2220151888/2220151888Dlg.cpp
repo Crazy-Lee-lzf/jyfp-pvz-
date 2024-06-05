@@ -408,6 +408,7 @@ void CMy2220151888Dlg::GameWin(){
 		if(page * 5 + level - 5 == jindu) jindu ++;
 
 		Updatedj();
+		return ;
 	}
 	else if(mode == 2) return;
 	int i, j, p;
@@ -543,12 +544,15 @@ void CMy2220151888Dlg::Usedj2(){
 		MessageBox("道具数量不足，快去商店购买吧", "使用失败");
 		return ;
 	}
+
+	dj2 --;
 	temp.Format("%d",dj2);
 	GetDlgItem(IDC_STATICL7) -> SetWindowPos(NULL, 190 + 66 * diff.M, 120 * 2, 30, 30, SWP_SHOWWINDOW);
 	GetDlgItem(IDC_STATICL7) -> SetWindowText(temp);
 	int n = diff.N * diff.M;
 	int tar = -1;
 	for(int i = 0;i < n;i++){
+		if((n&1) && i == n/2) continue;
 		if(flag[i] == 0){
 			if(tar == -1) tar = i;
 			else if(ans[tar] == ans[i]){

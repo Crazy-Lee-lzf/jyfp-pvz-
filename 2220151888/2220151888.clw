@@ -2,7 +2,7 @@
 
 [General Info]
 Version=1
-LastClass=CMy2220151888Dlg
+LastClass=Login
 LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "2220151888.h"
@@ -13,13 +13,13 @@ Class2=CMy2220151888Dlg
 Class3=CAboutDlg
 
 ResourceCount=6
-Resource1=IDD_ABOUTBOX
+Resource1=IDD_MY2220151888_DIALOG
 Resource2=IDR_MAINFRAME
 Class4=CPictureEx
-Resource3=IDD_DIALOG1
+Resource3=IDD_DIALOG2
 Class5=DIY
-Resource4=IDD_DIALOG2
-Resource5=IDD_MY2220151888_DIALOG
+Resource4=IDD_DIALOG1
+Resource5=IDD_ABOUTBOX
 Class6=Login
 Resource6=IDR_MENU1
 
@@ -260,6 +260,6 @@ HeaderFile=Login.h
 ImplementationFile=Login.cpp
 BaseClass=CDialog
 Filter=D
-LastObject=IDC_EDIT2
+LastObject=Login
 VirtualFilter=dWC
 

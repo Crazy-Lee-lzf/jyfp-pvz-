@@ -94,9 +94,11 @@ void Login::OnButton1()
 		
 		ifile >> spwd;
 		if(spwd == jiami(pwd)){
+			ifile >> dj1 >> dj2 >> dj3 >> money >> jindu;
 			MessageBox("登录成功！欢迎", "登录成功");
-			EndDialog(1);
 			ifile.close();
+			EndDialog(1);
+			
 		}
 		else{
 			MessageBox("账号或密码错误！","登录失败");
@@ -130,7 +132,7 @@ void Login::OnButton2()
 	}
 	ofstream tfile(txt,ios_base::out);
 	tfile << jiami(pwd) << '\n';
-	tfile << "0 0 0 0\n";
+	tfile << "0 0 0 0 1\n";
 	tfile.close();
 
 	MessageBox("注册成功，请登录", "注册成功");

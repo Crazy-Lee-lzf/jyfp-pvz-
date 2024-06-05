@@ -203,6 +203,10 @@ SOURCE=".\res\Doom-shroom1.jpg"
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\DP.jpg
+# End Source File
+# Begin Source File
+
 SOURCE=".\res\Explode-o-nut1.jpg"
 # End Source File
 # Begin Source File
@@ -372,6 +376,14 @@ SOURCE=".\res\Wall-nut1.jpg"
 # Begin Source File
 
 SOURCE=.\res\Winter_Melon1.jpg
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\XTC.jpg
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\YG.jpg
 # End Source File
 # Begin Source File
 

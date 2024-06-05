@@ -2,7 +2,7 @@
 
 [General Info]
 Version=1
-LastClass=Login
+LastClass=CMy2220151888Dlg
 LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "2220151888.h"
@@ -13,10 +13,10 @@ Class2=CMy2220151888Dlg
 Class3=CAboutDlg
 
 ResourceCount=6
-Resource1=IDD_DIALOG2
+Resource1=IDD_MY2220151888_DIALOG
 Resource2=IDR_MAINFRAME
 Class4=CPictureEx
-Resource3=IDD_MY2220151888_DIALOG
+Resource3=IDD_DIALOG2
 Class5=DIY
 Resource4=IDD_ABOUTBOX
 Resource5=IDD_DIALOG1
@@ -35,7 +35,7 @@ Type=0
 HeaderFile=2220151888Dlg.h
 ImplementationFile=2220151888Dlg.cpp
 Filter=D
-LastObject=IDC_STATICL1
+LastObject=IDC_BUTTON19
 BaseClass=CDialog
 VirtualFilter=dWC
 
@@ -58,7 +58,7 @@ Control4=IDOK,button,1342373889
 [DLG:IDD_MY2220151888_DIALOG]
 Type=1
 Class=CMy2220151888Dlg
-ControlCount=131
+ControlCount=134
 Control1=IDC_STATIC0,static,1073872896
 Control2=IDC_STATIC1,static,1073872896
 Control3=IDC_STATIC2,static,1073872896
@@ -190,6 +190,9 @@ Control128=IDC_STATICL7,static,1342308353
 Control129=IDC_STATICL8,static,1342308353
 Control130=IDC_STATICL9,static,1342308353
 Control131=IDC_STATICL10,static,1342308353
+Control132=IDC_BUTTON17,button,1342242816
+Control133=IDC_BUTTON18,button,1342242816
+Control134=IDC_BUTTON19,button,1342242816
 
 [CLS:CPictureEx]
 Type=0

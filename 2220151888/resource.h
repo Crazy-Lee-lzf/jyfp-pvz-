@@ -64,6 +64,9 @@
 #define IDR_JPG51                       183
 #define IDR_JPG52                       185
 #define IDD_DIALOG2                     186
+#define IDR_JPG53                       187
+#define IDR_JPG54                       188
+#define IDR_JPG55                       189
 #define IDC_STATIC0                     1000
 #define IDC_STATIC1                     1001
 #define IDC_STATIC2                     1002
@@ -205,6 +208,9 @@
 #define IDC_STATICL8                    1141
 #define IDC_STATICL9                    1142
 #define IDC_STATICL10                   1143
+#define IDC_BUTTON17                    1144
+#define IDC_BUTTON18                    1145
+#define IDC_BUTTON19                    1146
 #define ID_MENUITEM32771                32771
 #define ID_MENUITEM32772                32772
 #define ID_MENUITEM32773                32773
@@ -216,9 +222,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        187
+#define _APS_NEXT_RESOURCE_VALUE        190
 #define _APS_NEXT_COMMAND_VALUE         32777
-#define _APS_NEXT_CONTROL_VALUE         1135
+#define _APS_NEXT_CONTROL_VALUE         1147
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

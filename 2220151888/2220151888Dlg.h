@@ -29,10 +29,16 @@ public:
 	int pic[50];	//用来打乱图片顺序 让同一个难度的图也不一样
 	int timecnt;
 	int mode;  // 0 挑战 1 闯关 2 自定义
-	int level; //第几关（挑战模式则是什么难度从 0 开始
+	int level; //第几关（挑战模式则是什么难度从 0 开始)
 	int record[5][8];	//排行榜记录
 	int page;			//闯关模式第几大关
 	int TIME;			//当前关卡进行了多久
+	int money;			//金币数量
+	int dj1;			//三个道具数量
+	int dj2;
+	int dj3;
+	int jindu;			//当前玩家进行到了第几关
+	int where;			//当前是哪个页面
 
 	bool odd;
 	bool right;
@@ -138,6 +144,9 @@ protected:
 	afx_msg void OnStaticl3();
 	afx_msg void OnStaticl4();
 	afx_msg void OnStaticl5();
+	afx_msg void OnButton17();
+	afx_msg void OnButton18();
+	afx_msg void OnButton19();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

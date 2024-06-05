@@ -67,8 +67,7 @@ void Login::Show_Log(){
 	GetDlgItem(IDC_EDIT3) -> SetWindowText("");
 	GetDlgItem(IDC_BUTTON1) -> ShowWindow(true);
 	GetDlgItem(IDC_BUTTON2) -> ShowWindow(false);
-
-	GetDlgItem(IDC_STATIC3) -> SetWindowText("已有账号？点我登录");
+	GetDlgItem(IDC_STATIC3) -> SetWindowText("没有账号？点我注册");
 }
 
 void Login::Show_Reg(){
@@ -77,8 +76,7 @@ void Login::Show_Reg(){
 	GetDlgItem(IDC_EDIT3) -> SetWindowText("");
 	GetDlgItem(IDC_BUTTON2) -> ShowWindow(true);
 	GetDlgItem(IDC_BUTTON1) -> ShowWindow(false);
-
-	GetDlgItem(IDC_STATIC3) -> SetWindowText("没有账号？点我注册");
+	GetDlgItem(IDC_STATIC3) -> SetWindowText("已有账号？点我登录");
 }
 
 
@@ -89,16 +87,13 @@ void Login::OnButton1()
 	UpdateData(true);
 	CString txt = "players/" + acount + ".txt";
 	ifstream ifile(txt, ios_base::in);
-	long spwd;
 	if(ifile){
-		
 		ifile >> spwd;
 		if(spwd == jiami(pwd)){
 			ifile >> dj1 >> dj2 >> dj3 >> money >> jindu;
 			MessageBox("登录成功！欢迎", "登录成功");
 			ifile.close();
 			EndDialog(1);
-			
 		}
 		else{
 			MessageBox("账号或密码错误！","登录失败");

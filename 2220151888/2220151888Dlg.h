@@ -40,6 +40,8 @@ public:
 	int jindu;			//当前玩家进行到了第几关
 	int where;			//当前是哪个页面
 
+	long spwd;
+
 	bool odd;
 	bool right;
 	bool running;		//是否正在游玩 
@@ -85,6 +87,11 @@ public:
 	void Home();		//回到主界面
 	void LevelInit();	//初始化关卡参数
 	void Log();			//登录界面
+	void Updatedj();	//更新道具
+	void Usedj1();
+	void Usedj2();
+	void Usedj3();
+	void BossRand();
 // Dialog Data
 	
 	//{{AFX_DATA(CMy2220151888Dlg)
@@ -147,6 +154,8 @@ protected:
 	afx_msg void OnButton17();
 	afx_msg void OnButton18();
 	afx_msg void OnButton19();
+	afx_msg void OnPlay();
+	afx_msg void OnNoPlay();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

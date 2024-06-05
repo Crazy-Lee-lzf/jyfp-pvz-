@@ -11,6 +11,10 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+#include <mmsystem.h>		
+#pragma comment(lib, "WINMM.LIB")	
+
+
 /////////////////////////////////////////////////////////////////////////////
 // CAboutDlg dialog used for App About
 
@@ -78,15 +82,17 @@ CMy2220151888Dlg::CMy2220151888Dlg(CWnd* pParent /*=NULL*/)
 	while((ch=ifile.get())!=EOF){
 		if(ch == '\n') continue;
 		if(ch == ' '){
-			j ++;
+			if(flag == 1)j ++;
 			if(j == 8){
 				i ++;
 				j = 0;
 			}
-			ifile >> record[i][j];
+			flag ^= 1;
+			record[i][j] = 0;
 		}
 		else{
-			rname[i][j] += ch;
+			if(flag == 0) rname[i][j] += ch;
+			else record[i][j] = record[i][j] * 10 + ch - '0';
 		}
 	}
 	for(i = 0;i < 50;i++) pic[i] = i;
@@ -99,7 +105,12 @@ CMy2220151888Dlg::CMy2220151888Dlg(CWnd* pParent /*=NULL*/)
 	page = 1;
 	running = 0;
 
-
+	CString txt = "players/游客.txt";
+	ifstream myfin(txt, ios_base::in);
+	myfin >> spwd;
+	myfin >> dj1 >> dj2 >> dj3 >> money >> jindu;
+	
+	myfin.close();
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
@@ -157,6 +168,8 @@ BEGIN_MESSAGE_MAP(CMy2220151888Dlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON17, OnButton17)
 	ON_BN_CLICKED(IDC_BUTTON18, OnButton18)
 	ON_BN_CLICKED(IDC_BUTTON19, OnButton19)
+	ON_COMMAND(Play, OnPlay)
+	ON_COMMAND(NoPlay, OnNoPlay)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -192,7 +205,7 @@ BOOL CMy2220151888Dlg::OnInitDialog()
 	
 	// TODO: Add extra initialization here
 	Home();
-	
+	OnPlay();
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -288,14 +301,21 @@ void CMy2220151888Dlg::Show(){
 		}
 	}
 	if(right == 1){
-		GameWin();
 		KillTimer(2);
+		GameWin();
+		
 	}
 }
 
 void CMy2220151888Dlg::Start(){
 	HideAll();
 	where = 3;
+	running = 1;
+	TIME = 0;
+	start = 0;
+	lastnum = -1;
+	odd = 1;
+	right = 0;
 
 	SetWindowPos(&wndTop, 0, 0, diff.M * 66 + 250 , diff.N * 66 + 250 , SWP_SHOWWINDOW);
 
@@ -314,13 +334,35 @@ void CMy2220151888Dlg::Start(){
 	GetDlgItem(IDC_STATICTime) -> SetWindowPos(NULL, 50 + 66 * diff.M + 45, 35, 200 - 35, 35, SWP_SHOWWINDOW);
 	temp.Format("剩余时间：%3d秒", diff.T - TIME);
 	GetDlgItem(IDC_STATICTime) -> SetWindowText(temp);
+	if(mode == 1){
+		GetDlgItem(IDC_STATICL9) -> SetWindowPos(NULL, 0, diff.N * 66 + 170, 200, 30, SWP_SHOWWINDOW);
+		temp.Format("金币数量：%6d", money);
+		GetDlgItem(IDC_STATICL9) -> SetWindowText(temp);
+		if(page > 1 || level > 2){
+			GetDlgItem(IDC_STATICL1) -> SetWindowPos(NULL, 70 + 66 * diff.M, 80, 100, 100, SWP_SHOWWINDOW);
+			if(tul[0].Load(MAKEINTRESOURCE(IDR_JPG53),_T("jpg")))	tul[0].Draw();
 
-	running = 1;
-	TIME = 0;
-	start = 0;
-	lastnum = -1;
-	odd = 1;
-	right = 0;
+			GetDlgItem(IDC_STATICL2) -> SetWindowPos(NULL, 70 + 66 * diff.M, 80 + 120, 100, 100, SWP_SHOWWINDOW);
+			if(tul[1].Load(MAKEINTRESOURCE(IDR_JPG54),_T("jpg")))	tul[1].Draw();
+
+			GetDlgItem(IDC_STATICL3) -> SetWindowPos(NULL, 70 + 66 * diff.M, 80 + 240, 100, 100, SWP_SHOWWINDOW);
+			if(tul[2].Load(MAKEINTRESOURCE(IDR_JPG55),_T("jpg")))	tul[2].Draw();
+
+			temp.Format("%d",dj1);
+			GetDlgItem(IDC_STATICL6) -> SetWindowPos(NULL, 190 + 66 * diff.M, 120, 30, 30, SWP_SHOWWINDOW);
+			GetDlgItem(IDC_STATICL6) -> SetWindowText(temp);
+
+			temp.Format("%d",dj2);
+			GetDlgItem(IDC_STATICL7) -> SetWindowPos(NULL, 190 + 66 * diff.M, 120 * 2, 30, 30, SWP_SHOWWINDOW);
+			GetDlgItem(IDC_STATICL7) -> SetWindowText(temp);
+
+			temp.Format("%d",dj3);
+			GetDlgItem(IDC_STATICL8) -> SetWindowPos(NULL, 190 + 66 * diff.M, 120 * 3, 30, 30, SWP_SHOWWINDOW);
+			GetDlgItem(IDC_STATICL8) -> SetWindowText(temp);
+		}
+	}
+	
+
 	int i;
 	int n = diff.N*diff.M;
 	for(i = 0;i < n;i++){
@@ -336,12 +378,38 @@ void CMy2220151888Dlg::Start(){
 }
 
 void CMy2220151888Dlg::GameWin(){
+	KillTimer(1);
+	KillTimer(2);
+	KillTimer(3);
+	KillTimer(4);
 	end = time(0);
 	CString temp;
 	temp.Format("  恭喜你过关啦！\n  你一共用时 %5d 秒", end- start);
 	MessageBox(temp, "过关");
+	
+	if(mode == 1){
+		if(page == 1){
+			money += 3 + level * 2;
+		}
+		else if(page == 2){
+			money += 10 + level * 5;
+		}
+		else if(page == 3){
+			money += 20 + level * 10;
+		}
+		else if(page == 4){
+			money += 50 + level * 30;
+		}
+		if(money > 99999) money = 99999;
+		if(page == 5 && level == 5){
+			MessageBox("恭喜你通关了！！！", "通关");
+			money = 99999;
+		}
+		if(page * 5 + level - 5 == jindu) jindu ++;
 
-	if(mode != 1) return;
+		Updatedj();
+	}
+	else if(mode == 2) return;
 	int i, j, p;
 	if(end - start < record[level][7]){
 		temp.Format("w(°ｏ°)w 你打破了记录，太厉害啦!");
@@ -379,7 +447,7 @@ void CMy2220151888Dlg::ShowRank(){
 	CString temp;
 	list_c.ResetContent();
 	for(i = 0;i < 8;i++){
-		temp.Format("第%1d名：%6s 用时%4d秒",i+1, rname[level][i], record[level][i]);
+		temp.Format("第%1d名：%10s 用时%4d秒",i+1, rname[level][i], record[level][i]);
 		list_c.AddString(temp);
 	}
 	switch(level){
@@ -395,7 +463,7 @@ void CMy2220151888Dlg::ShowRank(){
 void CMy2220151888Dlg::HideAll(){
 	int i = 0;
 	for(i = 1000;i <= 1110;i++) GetDlgItem(i) -> ShowWindow(false);
-	for(i = 1124;i <= 1143;i++) GetDlgItem(i) -> ShowWindow(false);
+	for(i = 1124;i <= 1146;i++) GetDlgItem(i) -> ShowWindow(false);
 }
 
 void CMy2220151888Dlg::Home(){
@@ -416,11 +484,14 @@ void CMy2220151888Dlg::Home(){
 	running = 0;
 	KillTimer(1);
 	KillTimer(2);
+	KillTimer(3);
+	KillTimer(4);
 }
 
 void CMy2220151888Dlg::Log(){
 	Login login;
 	if(login.DoModal() == 1){
+		spwd = login.spwd;
 		playernow = login.acount;
 		dj1 = login.dj1;
 		dj2 = login.dj2;
@@ -429,6 +500,83 @@ void CMy2220151888Dlg::Log(){
 		jindu = login.jindu;
 	}
 	Home();
+}
+
+void CMy2220151888Dlg::Updatedj(){
+	ofstream myout("players/" + playernow + ".txt",ios_base::out);
+	myout << spwd << '\n';
+	myout << dj1 << ' ' << dj2 << ' ' << dj3 << ' ' << money << ' ' << jindu << '\n';
+	myout.close();
+}
+
+void CMy2220151888Dlg::Usedj1(){
+	if(start == 0 || running == 0){
+		MessageBox("我知道你很急，但是你先别急(开始之后才能使用道具,阳光使用期间也不能使用道具)", "使用失败");
+		return ;
+	}
+	else if(dj1 == 0){
+		MessageBox("道具数量不足，快去商店购买吧", "使用失败");
+		return ;
+	}
+	dj1 --;
+	temp.Format("%d",dj1);
+	GetDlgItem(IDC_STATICL6) -> SetWindowPos(NULL, 190 + 66 * diff.M, 120, 30, 30, SWP_SHOWWINDOW);
+	GetDlgItem(IDC_STATICL6) -> SetWindowText(temp);
+	running = 0;
+	int i;
+	int n = diff.N*diff.M;
+	for(i = 0;i < n;i++){
+		if((n&1) && i == n/2) continue;
+		if(tu[i].Load(MAKEINTRESOURCE(IDR_JPG1+ans[i]),_T("jpg")))	tu[i].Draw();
+	}
+	SetTimer(3, 5000, NULL);
+	KillTimer(2);
+
+	Updatedj();
+}
+void CMy2220151888Dlg::Usedj2(){
+	if(start == 0 || running == 0){
+		MessageBox("我知道你很急，但是你先别急(开始之后才能使用道具,阳光使用期间也不能使用道具)", "使用失败");
+		return ;
+	}
+	else if(dj1 == 0){
+		MessageBox("道具数量不足，快去商店购买吧", "使用失败");
+		return ;
+	}
+	temp.Format("%d",dj2);
+	GetDlgItem(IDC_STATICL7) -> SetWindowPos(NULL, 190 + 66 * diff.M, 120 * 2, 30, 30, SWP_SHOWWINDOW);
+	GetDlgItem(IDC_STATICL7) -> SetWindowText(temp);
+	int n = diff.N * diff.M;
+	int tar = -1;
+	for(int i = 0;i < n;i++){
+		if(flag[i] == 0){
+			if(tar == -1) tar = i;
+			else if(ans[tar] == ans[i]){
+				flag[tar] = 1;
+				flag[i] = 1;
+				Show();
+				return ;
+			}
+		}
+	}
+
+	Updatedj();
+}
+void CMy2220151888Dlg::Usedj3(){
+	if(start == 0 || running == 0){
+		MessageBox("我知道你很急，但是你先别急(开始之后才能使用道具,阳光使用期间也不能使用道具)", "使用失败");
+		return ;
+	}
+	else if(dj1 == 0){
+		MessageBox("道具数量不足，快去商店购买吧", "使用失败");
+		return ;
+	}
+	temp.Format("%d",dj3);
+	GetDlgItem(IDC_STATICL8) -> SetWindowPos(NULL, 190 + 66 * diff.M, 120 * 3, 30, 30, SWP_SHOWWINDOW);
+	GetDlgItem(IDC_STATICL8) -> SetWindowText(temp);
+	diff.T += 30;
+
+	Updatedj();
 }
 
 void CMy2220151888Dlg::OnButton1() 
@@ -447,10 +595,10 @@ void CMy2220151888Dlg::OnButton1()
 void CMy2220151888Dlg::OnButton2() 
 {
 	// TODO: Add your control notification handler code here
-	diff.N = 5;
-	diff.M = 5;
+	diff.N = 4;
+	diff.M = 4;
 	diff.t = 4000;
-	diff.n4 = 2;
+	diff.n4 = 0;
 	diff.boss = 0;
 	diff.T = 30;
 	level = 1;
@@ -499,6 +647,10 @@ void CMy2220151888Dlg::OnButton5()
 void CMy2220151888Dlg::OnButton6() 
 {
 	// TODO: Add your control notification handler code here
+	KillTimer(1);
+	KillTimer(2);
+	KillTimer(3);
+	KillTimer(4);
 	if(where == 1){
 		Home();
 	}
@@ -514,6 +666,8 @@ void CMy2220151888Dlg::OnButton6()
 void CMy2220151888Dlg::OnTimer(UINT nIDEvent) 
 {
 	// TODO: Add your message handler code here and/or call default
+	int l, i, n, p;
+	double x;
 	switch(nIDEvent){
 		case 1:
 			Show();
@@ -521,13 +675,11 @@ void CMy2220151888Dlg::OnTimer(UINT nIDEvent)
 			odd = 1;
 			KillTimer(1);
 			break;
-		default: break;
 		case 2:
 			TIME++;
-			int l = 66 * diff.M;
-			double x = (diff.T - TIME) * 1.0 / diff.T;
+			l = 66 * diff.M;
+			x = (diff.T - TIME) * 1.0 / diff.T;
 			GetDlgItem(IDC_STATICZombie) -> SetWindowPos(NULL, 50 + l * x, 35, 35, 35, SWP_SHOWWINDOW);
-
 			temp.Format("剩余时间：%3d秒", diff.T - TIME);
 			GetDlgItem(IDC_STATICTime) -> SetWindowText(temp);
 			if(TIME == diff.T){
@@ -535,7 +687,31 @@ void CMy2220151888Dlg::OnTimer(UINT nIDEvent)
 				MessageBox("僵尸吃掉了你的脑子","失败");
 				Home();
 			}
-
+			if(level == 5 && TIME % 30 == 0 && mode == 1){
+				MessageBox("BOSS发动了攻击打乱了你的所有卡牌（每30秒一次）", "BOSS发动攻击", MB_ICONWARNING);
+				n = diff.N * diff.M;
+				vector<int> temp_pic;
+				for(i = 0;i < n;i++){
+					if(flag[i] == 0) temp_pic.push_back(ans[i]);
+				}
+				std::random_shuffle(temp_pic.begin(), temp_pic.end());
+				p = 0;
+				for(i = 0;i < n;i++){
+					if(flag[i] == 0) ans[i] = temp_pic[p++];
+				}
+			}
+			break;
+		case 3:
+			running = 1;
+			n = diff.N*diff.M;
+			for(i = 0;i < n;i++){
+				if((n&1) && i == n/2) continue;
+				if(flag[i] == 0) if(tu[i].Load(MAKEINTRESOURCE(bg),_T("jpg"))) tu[i].Draw();
+				else if(tu[i].Load(MAKEINTRESOURCE(IDR_JPG1+ans[i]),_T("jpg")))	tu[i].Draw();
+			}
+			SetTimer(2, 1000, NULL);
+			break;
+			
 	}
 	CDialog::OnTimer(nIDEvent);
 }
@@ -600,9 +776,8 @@ void CMy2220151888Dlg::OnButton7()
 		diff.M = diy.M;
 		diff.n4 = diy.n4;
 		diff.t = diy.t;
-		diff.T = diff.T;
+		diff.T = diy.T;
 		diff.boss = 0;
-		level = 5; 
 		Start();
 	}
 	mode = 2;
@@ -620,14 +795,41 @@ void CMy2220151888Dlg::OnButton10()
 	HideAll();
 	where = 2;
 	
-	SetWindowPos(&wndTop, 500, 100, 650 , 350 , SWP_SHOWWINDOW);
+	SetWindowPos(&wndTop, 500, 100, 650 , 550 , SWP_SHOWWINDOW);
 	GetDlgItem(IDC_BUTTON6) -> SetWindowPos(NULL, 650 - 101, 0, 100, 30, SWP_SHOWWINDOW);
 
 	CString temp = "欢迎:  " + playernow;
 	GetDlgItem(IDC_STATICName) -> SetWindowText(temp);
 	GetDlgItem(IDC_STATICName) -> SetWindowPos(NULL, 0, 0, 350, 30, SWP_SHOWWINDOW);
 
+	GetDlgItem(IDC_STATIC0) -> SetWindowPos(NULL, 50, 50, 100, 100, SWP_SHOWWINDOW);
+	if(tu[0].Load(MAKEINTRESOURCE(IDR_JPG53),_T("jpg")))	tu[0].Draw();
+	GetDlgItem(IDC_STATIC1) -> SetWindowPos(NULL, 50, 50 + 150, 100, 100, SWP_SHOWWINDOW);
+	if(tu[1].Load(MAKEINTRESOURCE(IDR_JPG54),_T("jpg")))	tu[1].Draw();
+	GetDlgItem(IDC_STATIC2) -> SetWindowPos(NULL, 50, 50 + 300, 100, 100, SWP_SHOWWINDOW);
+	if(tu[2].Load(MAKEINTRESOURCE(IDR_JPG55),_T("jpg")))	tu[2].Draw();
+	
+	GetDlgItem(IDC_STATICL6) -> SetWindowPos(NULL, 170, 50, 500, 60, SWP_SHOWWINDOW);
+	temp.Format("阳光，查看全场卡片5秒，售价：20金币\n\r已有数量：%3d",dj1);
+	GetDlgItem(IDC_STATICL6) -> SetWindowText(temp);
 
+	GetDlgItem(IDC_STATICL7) -> SetWindowPos(NULL, 170, 50 + 150, 500, 60, SWP_SHOWWINDOW);
+	temp.Format("钉耙，自动随机翻开一对植物，售价：10金币\n\r已有数量：%3d",dj2);
+	GetDlgItem(IDC_STATICL7) -> SetWindowText(temp);
+
+	GetDlgItem(IDC_STATICL8) -> SetWindowPos(NULL, 170, 50 + 300, 500, 60, SWP_SHOWWINDOW);
+	temp.Format("小推车，阻挡僵尸进攻三十秒，售价：100金币\n\r已有数量：%3d",dj3);
+	GetDlgItem(IDC_STATICL8) -> SetWindowText(temp);
+
+	GetDlgItem(IDC_STATICL9) -> SetWindowPos(NULL, 0, 470, 200, 30, SWP_SHOWWINDOW);
+	temp.Format("金币数量：%6d", money);
+	GetDlgItem(IDC_STATICL9) -> SetWindowText(temp);
+	
+
+	GetDlgItem(IDC_BUTTON17) -> SetWindowPos(NULL, 170, 120, 100, 30, SWP_SHOWWINDOW);
+	GetDlgItem(IDC_BUTTON18) -> SetWindowPos(NULL, 170, 120 + 150, 100, 30, SWP_SHOWWINDOW);
+	GetDlgItem(IDC_BUTTON19) -> SetWindowPos(NULL, 170, 120 + 300, 100, 30, SWP_SHOWWINDOW);
+	
 }
 
 void CMy2220151888Dlg::OnButton12() 
@@ -697,6 +899,7 @@ void CMy2220151888Dlg::OnButton8()
 
 	int i = 0;
 	for(i = 0;i < 5;i++){
+		if(page * 5 + i - 4 > jindu) break;
 		GetDlgItem(IDC_STATICL1 + i) -> SetWindowPos(NULL,  50 + 100 * i, 40, 70, 70, SWP_SHOWWINDOW);
 		if(tul[i].Load(MAKEINTRESOURCE(IDR_JPG52),_T("jpg")))	tul[i].Draw();
 
@@ -726,6 +929,7 @@ void CMy2220151888Dlg::OnButton15()
 void CMy2220151888Dlg::OnButton16() 
 {
 	// TODO: Add your control notification handler code here
+	if(page * 5 >= jindu) return;
 	if(page != 4){
 		page ++;
 		OnButton8();
@@ -809,21 +1013,36 @@ void CMy2220151888Dlg::LevelInit(){
 void CMy2220151888Dlg::OnStaticl1() 
 {
 	// TODO: Add your control notification handler code here
+	if(where == 3){
+		Usedj1();
+		return ;
+	}
 	diff = diffcg[page - 1][0];
+	level = 1;
 	Start();
 }
 
 void CMy2220151888Dlg::OnStaticl2() 
 {
 	// TODO: Add your control notification handler code here
+	if(where == 3){
+		Usedj2();
+		return ;
+	}
 	diff = diffcg[page - 1][1];
+	level = 2;
 	Start();
 }
 
 void CMy2220151888Dlg::OnStaticl3() 
 {
 	// TODO: Add your control notification handler code here
+	if(where == 3){
+		Usedj3();
+		return ;
+	}
 	diff = diffcg[page - 1][2];
+	level = 3;
 	Start();
 }
 
@@ -831,6 +1050,7 @@ void CMy2220151888Dlg::OnStaticl4()
 {
 	// TODO: Add your control notification handler code here
 	diff = diffcg[page - 1][3];
+	level = 4;
 	Start();
 }
 
@@ -838,23 +1058,92 @@ void CMy2220151888Dlg::OnStaticl5()
 {
 	// TODO: Add your control notification handler code here
 	diff = diffcg[page - 1][4];
+	level = 5;
 	Start();
 }
 
 void CMy2220151888Dlg::OnButton17() 
 {
 	// TODO: Add your control notification handler code here
-	
+	if(money < 20){
+		MessageBox("金币不足！", "购买失败");
+		return ;
+	}
+	else if(dj1 >= 9){
+		MessageBox("已到达持有上限（9个）", "购买失败");
+		return ;
+	}
+	money -= 20;
+	dj1 ++;
+	GetDlgItem(IDC_STATICL6) -> SetWindowPos(NULL, 170, 50, 500, 60, SWP_SHOWWINDOW);
+	temp.Format("阳光，查看全场卡片5秒，售价：20金币\n\r已有数量：%3d",dj1);
+	GetDlgItem(IDC_STATICL6) -> SetWindowText(temp);
+
+	GetDlgItem(IDC_STATICL9) -> SetWindowPos(NULL, 0, 470, 200, 30, SWP_SHOWWINDOW);
+	temp.Format("金币数量：%6d", money);
+	GetDlgItem(IDC_STATICL9) -> SetWindowText(temp);
+
+	Updatedj();
 }
 
 void CMy2220151888Dlg::OnButton18() 
 {
 	// TODO: Add your control notification handler code here
+	if(money < 10){
+		MessageBox("金币不足！", "购买失败");
+		return ;
+	}
+	else if(dj2 >= 9){
+		MessageBox("已到达持有上限（9个）", "购买失败");
+		return ;
+	}
+	money -= 10;
+	dj2 ++;
 	
+	GetDlgItem(IDC_STATICL7) -> SetWindowPos(NULL, 170, 50 + 150, 500, 60, SWP_SHOWWINDOW);
+	temp.Format("钉耙，自动随机翻开一对植物，售价：10金币\n\r已有数量：%3d",dj2);
+	GetDlgItem(IDC_STATICL7) -> SetWindowText(temp);
+
+	GetDlgItem(IDC_STATICL9) -> SetWindowPos(NULL, 0, 470, 200, 30, SWP_SHOWWINDOW);
+	temp.Format("金币数量：%6d", money);
+	GetDlgItem(IDC_STATICL9) -> SetWindowText(temp);
+
+	Updatedj();
 }
 
 void CMy2220151888Dlg::OnButton19() 
 {
 	// TODO: Add your control notification handler code here
-	
+	if(money < 100){
+		MessageBox("金币不足！", "购买失败");
+		return ;
+	}
+	else if(dj3 >= 9){
+		MessageBox("已到达持有上限（9个）", "购买失败");
+		return ;
+	}
+	money -= 100;
+	dj3 ++;
+
+	GetDlgItem(IDC_STATICL8) -> SetWindowPos(NULL, 170, 50 + 300, 500, 60, SWP_SHOWWINDOW);
+	temp.Format("小推车，阻挡僵尸进攻三十秒，售价：100金币\n\r已有数量：%3d",dj3);
+	GetDlgItem(IDC_STATICL8) -> SetWindowText(temp);
+
+	GetDlgItem(IDC_STATICL9) -> SetWindowPos(NULL, 0, 470, 200, 30, SWP_SHOWWINDOW);
+	temp.Format("金币数量：%6d", money);
+	GetDlgItem(IDC_STATICL9) -> SetWindowText(temp);
+
+	Updatedj();
+}
+
+void CMy2220151888Dlg::OnPlay() 
+{
+	// TODO: Add your command handler code here
+	PlaySound(MAKEINTRESOURCE(IDR_WAVE1),NULL,SND_ASYNC|SND_RESOURCE|SND_LOOP);
+}
+
+void CMy2220151888Dlg::OnNoPlay() 
+{
+	// TODO: Add your command handler code here
+	PlaySound(NULL,NULL,NULL);
 }

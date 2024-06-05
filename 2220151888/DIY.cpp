@@ -63,5 +63,13 @@ void DIY::OnButton1()
 {
 	// TODO: Add your control notification handler code here
 	UpdateData(true);
+	if(N * M > 100){
+		MessageBox("太大了！最大N * M不能超过100", "创建失败");
+		return ;
+	}
+	if(n4 * 4 > N * M){
+		MessageBox("你算算能有这么多图出现两对吗", "创建失败");
+		return ;
+	}
 	EndDialog(1);
 }

@@ -22,6 +22,7 @@ public:
 	void Show_Reg();
 	long jiami(CString &s);
 	int dj1, dj2, dj3, money, jindu;
+	long spwd;
 // Dialog Data
 	//{{AFX_DATA(Login)
 	enum { IDD = IDD_DIALOG2 };

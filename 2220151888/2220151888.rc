@@ -220,11 +220,11 @@ BEGIN
     CTEXT           "Static",IDC_STATICL3,249,116,25,8,SS_NOTIFY
     CTEXT           "Static",IDC_STATICL4,191,127,25,8,SS_NOTIFY
     CTEXT           "Static",IDC_STATICL5,220,129,25,8,SS_NOTIFY
-    CTEXT           "Static",IDC_STATICL6,186,144,25,8,SS_CENTERIMAGE
-    CTEXT           "Static",IDC_STATICL7,220,144,25,8
-    CTEXT           "Static",IDC_STATICL8,245,146,25,8
-    CTEXT           "Static",IDC_STATICL9,187,157,25,8
-    CTEXT           "Static",IDC_STATICL10,216,159,25,8
+    LTEXT           "Static",IDC_STATICL6,186,144,25,8
+    LTEXT           "Static",IDC_STATICL7,220,144,25,8
+    LTEXT           "Static",IDC_STATICL8,245,146,25,8
+    LTEXT           "Static",IDC_STATICL9,187,157,25,8
+    LTEXT           "Static",IDC_STATICL10,216,159,25,8
     PUSHBUTTON      "¹ºÂò",IDC_BUTTON17,36,196,50,14
     PUSHBUTTON      "¹ºÂò",IDC_BUTTON18,93,195,50,14
     PUSHBUTTON      "¹ºÂò",IDC_BUTTON19,150,196,50,14
@@ -434,6 +434,11 @@ BEGIN
         MENUITEM "À§ÄÑÄÑ¶È",                    ID_MENUITEM32775
         MENUITEM "µØÓüÄÑ¶È",                    ID_MENUITEM32776
     END
+    POPUP "±³¾°ÒôÀÖ"
+    BEGIN
+        MENUITEM "²¥·Å",                        Play
+        MENUITEM "Í£Ö¹²¥·Å",                    NoPlay
+    END
 END
 
 
@@ -443,6 +448,13 @@ END
 //
 
 IDR_GIF1                GIF     DISCARDABLE     "res\\Zombie.gif"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// WAVE
+//
+
+IDR_WAVE1               WAVE    DISCARDABLE     "res\\tk4zv-35kb2.wav"
 
 /////////////////////////////////////////////////////////////////////////////
 //

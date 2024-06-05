@@ -13,13 +13,13 @@ Class2=CMy2220151888Dlg
 Class3=CAboutDlg
 
 ResourceCount=6
-Resource1=IDD_MY2220151888_DIALOG
+Resource1=IDD_ABOUTBOX
 Resource2=IDR_MAINFRAME
 Class4=CPictureEx
-Resource3=IDD_DIALOG2
+Resource3=IDD_DIALOG1
 Class5=DIY
-Resource4=IDD_ABOUTBOX
-Resource5=IDD_DIALOG1
+Resource4=IDD_DIALOG2
+Resource5=IDD_MY2220151888_DIALOG
 Class6=Login
 Resource6=IDR_MENU1
 
@@ -35,7 +35,7 @@ Type=0
 HeaderFile=2220151888Dlg.h
 ImplementationFile=2220151888Dlg.cpp
 Filter=D
-LastObject=IDC_BUTTON19
+LastObject=NoPlay
 BaseClass=CDialog
 VirtualFilter=dWC
 
@@ -185,11 +185,11 @@ Control123=IDC_STATICL2,static,1342308609
 Control124=IDC_STATICL3,static,1342308609
 Control125=IDC_STATICL4,static,1342308609
 Control126=IDC_STATICL5,static,1342308609
-Control127=IDC_STATICL6,static,1342308865
-Control128=IDC_STATICL7,static,1342308353
-Control129=IDC_STATICL8,static,1342308353
-Control130=IDC_STATICL9,static,1342308353
-Control131=IDC_STATICL10,static,1342308353
+Control127=IDC_STATICL6,static,1342308352
+Control128=IDC_STATICL7,static,1342308352
+Control129=IDC_STATICL8,static,1342308352
+Control130=IDC_STATICL9,static,1342308352
+Control131=IDC_STATICL10,static,1342308352
 Control132=IDC_BUTTON17,button,1342242816
 Control133=IDC_BUTTON18,button,1342242816
 Control134=IDC_BUTTON19,button,1342242816
@@ -225,7 +225,7 @@ ImplementationFile=DIY.cpp
 BaseClass=CDialog
 Filter=D
 VirtualFilter=dWC
-LastObject=DIY
+LastObject=IDC_EDIT1
 
 [MNU:IDR_MENU1]
 Type=1
@@ -236,7 +236,9 @@ Command3=ID_MENUITEM32773
 Command4=ID_MENUITEM32774
 Command5=ID_MENUITEM32775
 Command6=ID_MENUITEM32776
-CommandCount=6
+Command7=Play
+Command8=NoPlay
+CommandCount=8
 
 [DLG:IDD_DIALOG2]
 Type=1
